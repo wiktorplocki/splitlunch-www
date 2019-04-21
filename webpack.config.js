@@ -10,7 +10,7 @@ const PostCssImport = require('postcss-import');
 
 class TailwindExtractor {
   static extract(content) {
-    return content.match(/[A-z0-9-:\/]+g/) || [];
+    return content.match(/[A-z0-9-:\/]+/g) || [];
   }
 }
 
@@ -30,6 +30,7 @@ module.exports = {
       chunkFilename: '[name].[hash].css'
     }),
     new PurgecssWebpackPlugin({
+      whitelist: ['html', 'body'],
       paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
       content: ['./src/**/*.html', './src/**/*.js'],
       extractors: [
@@ -109,9 +110,9 @@ module.exports = {
             options: {
               ident: 'postcss',
               plugins: () => [
-                Tailwind('./tailwind.js'),
                 PostCssImport(),
-                PostcssPresetEnv()
+                PostcssPresetEnv(),
+                Tailwind('./tailwind.js')
               ]
             }
           }
