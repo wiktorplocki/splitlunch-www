@@ -7,7 +7,7 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode=development"
+    "start": "webpack-dev-server --mode=development --env=development --progress"
   },
   "dependencies": {
     "hookrouter": "^1.1.4",
