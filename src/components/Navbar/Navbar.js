@@ -1,22 +1,31 @@
 import React from 'react';
+import { A } from 'hookrouter';
 
 import AuthContext from '../../contexts/AuthContext';
 
-const Navbar = props => (
+const Navbar = () => (
   <AuthContext.Consumer>
     {context => (
       <header className="navbar flex justify-between items-center container mx-auto">
         <div className="left">
           <div className="logo">
-            <h1>SplitLunch</h1>
+            <A href="/">
+              <h1>SplitLunch</h1>
+            </A>
           </div>
         </div>
         <nav className="right">
           <ul className="list-reset">
-            {!context.token && <li>Login</li>}
+            {!context.token && (
+              <A href="/login">
+                <li>Login</li>
+              </A>
+            )}
             {context.token && (
               <React.Fragment>
-                <li>Orders</li>
+                <A href="/orders">
+                  <li>Orders</li>
+                </A>
                 <li onClick={context.logout}>Logout</li>
               </React.Fragment>
             )}
