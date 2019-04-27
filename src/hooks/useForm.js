@@ -8,11 +8,13 @@ const useForm = (callback, validate) => {
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
+      setIsSubmitting(false);
     }
   }, [errors]);
 
   const handleSubmit = event => {
     if (event) {
+      console.log(event);
       event.preventDefault();
       setIsSubmitting(true);
       setErrors(validate(values));
@@ -23,12 +25,43 @@ const useForm = (callback, validate) => {
     event.persist();
     setValue(values => ({
       ...values,
+      [`${event.target.name}Touched`]: true,
       [event.target.name]: event.target.value
     }));
+    if (event.target.value === '') {
+      setValue(values => ({
+        ...values,
+        [event.target.name]: event.target.value
+      }));
+    }
+    console.log(values);
+    console.log(values[event.target.name]);
+    setErrors(validate(values));
+  };
+
+  const handleFocus = event => {
+    event.persist();
+    setValue(values => ({
+      [event.target.name]: event.target.value,
+      ...values
+    }));
+    setErrors(validate(values));
+  };
+
+  const handleBlur = event => {
+    event.persist();
+    setValue(values => ({
+      ...values,
+      [`${event.target.name}Touched`]: true
+    }));
+    setErrors(validate(values));
+    console.log(values);
   };
 
   return {
     handleChange,
+    handleFocus,
+    handleBlur,
     handleSubmit,
     values,
     errors
