@@ -7,10 +7,11 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode=development --env=development --progress"
+    "start": "webpack-dev-server --mode=development --progress"
   },
   "dependencies": {
     "hookrouter": "^1.1.4",
+    "now-env": "^3.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
