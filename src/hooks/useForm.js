@@ -14,7 +14,6 @@ const useForm = (callback, validate) => {
 
   const handleSubmit = event => {
     if (event) {
-      console.log(event);
       event.preventDefault();
       setIsSubmitting(true);
       setErrors(validate(values));
@@ -34,8 +33,6 @@ const useForm = (callback, validate) => {
         [event.target.name]: event.target.value
       }));
     }
-    console.log(values);
-    console.log(values[event.target.name]);
     setErrors(validate(values));
   };
 
@@ -55,7 +52,6 @@ const useForm = (callback, validate) => {
       [`${event.target.name}Touched`]: true
     }));
     setErrors(validate(values));
-    console.log(values);
   };
 
   return {
