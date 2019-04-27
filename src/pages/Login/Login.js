@@ -1,22 +1,60 @@
 import React, { useContext } from 'react';
+import { navigate, useTitle } from 'hookrouter';
 
-import useForm from '../../hooks/useForm';
 import AuthContext from '../../contexts/AuthContext';
+import useForm from '../../hooks/useForm';
 import validate from './Validator';
 
+import LoginQuery from '../../queries/LoginQuery';
+
 const Login = () => {
-  const loginHandler = () => console.log(values);
+  useTitle('SplitLunch - Login');
   const { login } = useContext(AuthContext);
-  const { values, handleChange, handleSubmit, errors } = useForm(
-    loginHandler,
-    validate
-  );
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    handleFocus,
+    handleBlur,
+    errors
+  } = useForm(loginHandler, validate);
+  let graphqlErrors = {};
+  function loginHandler() {
+    const { email, password } = values;
+    const query = {
+      query: LoginQuery,
+      variables: { email, password }
+    };
+    fetch(`https://splitlunch-api.now.sh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(query)
+    })
+      .then(res => res.json())
+      .catch(err => (errors.password = err[0].message))
+      .then(result => {
+        const { data } = result;
+        if (result.errors) {
+          graphqlErrors = {
+            ...graphqlErrors,
+            graphql: result.errors[0].message
+          };
+          console.log(graphqlErrors);
+        } else {
+          const { userId, token, tokenExpiry } = data.login;
+          login(userId, token, tokenExpiry);
+          return navigate('/', true);
+        }
+      })
+      .catch(err => (errors.password = err));
+  }
 
   return (
     <div className="flex justify-center items-center login-view">
       <form
         className="w-full max-w-xs flex flex-col justify-center items-center bg-white shadow-md rounded px-8 pt-6 pb-8"
         onSubmit={handleSubmit}
+        onBlur={validate}
       >
         <div className="form-control w-full mb-4">
           <label
@@ -32,6 +70,8 @@ const Login = () => {
               name="email"
               placeholder="Email"
               onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               value={values.email || ''}
               required
             />
@@ -51,21 +91,25 @@ const Login = () => {
           >
             Password
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight focus:outline-none focus:shadow-outline"
               type="password"
               name="password"
               placeholder="Password"
               onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               value={values.password || ''}
               required
             />
           </label>
           <p
             className={
-              errors.password ? `block text-red text-xs italic` : `hidden`
+              errors.password || graphqlErrors
+                ? `block text-red text-xs italic`
+                : `hidden`
             }
           >
-            {errors.password}
+            {errors.password || graphqlErrors.graphql}
           </p>
         </div>
         <button type="submit">Login</button>
