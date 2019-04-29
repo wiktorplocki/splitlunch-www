@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "splitlunch-frontend": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "https://splitlunch-api.now.sh"
+        }
+      }
+    }
+  }
+}
