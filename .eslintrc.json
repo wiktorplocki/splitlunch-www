@@ -35,6 +35,9 @@
         "singleQuote": true
       }
     ],
-    "react-hooks/rules-of-hooks": "error"
+    "react-hooks/rules-of-hooks": "error",
+    "graphql/template-strings": ["error", {
+      "env": "literal"
+    }]
   }
 }

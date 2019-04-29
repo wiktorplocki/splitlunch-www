@@ -11,6 +11,7 @@ const PostCssImport = require('postcss-import');
 
 class TailwindExtractor {
   static extract(content) {
+    // eslint-disable-next-line no-useless-escape
     return content.match(/[A-z0-9-:\/]+/g) || [];
   }
 }
@@ -44,6 +45,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
       inject: false,
+      // eslint-disable-next-line global-require
       template: require('html-webpack-template'),
       appMountId: 'root',
       baseHref: '/'
@@ -83,6 +85,12 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader'
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
@@ -96,6 +104,11 @@ module.exports = {
             '@babel/preset-react'
           ]
         }
+      },
+      {
+        test: /\.(gql|grapqhl)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
       },
       {
         test: /\.css$/,
