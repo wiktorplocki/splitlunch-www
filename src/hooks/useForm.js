@@ -22,14 +22,14 @@ const useForm = (callback, validate) => {
 
   const handleChange = event => {
     event.persist();
-    setValue(values => ({
-      ...values,
+    setValue(prevValues => ({
+      ...prevValues,
       [`${event.target.name}Touched`]: true,
       [event.target.name]: event.target.value
     }));
     if (event.target.value === '') {
-      setValue(values => ({
-        ...values,
+      setValue(prevValues => ({
+        ...prevValues,
         [event.target.name]: event.target.value
       }));
     }
@@ -38,17 +38,17 @@ const useForm = (callback, validate) => {
 
   const handleFocus = event => {
     event.persist();
-    setValue(values => ({
+    setValue(prevValues => ({
       [event.target.name]: event.target.value,
-      ...values
+      ...prevValues
     }));
     setErrors(validate(values));
   };
 
   const handleBlur = event => {
     event.persist();
-    setValue(values => ({
-      ...values,
+    setValue(prevValues => ({
+      ...prevValues,
       [`${event.target.name}Touched`]: true
     }));
     setErrors(validate(values));

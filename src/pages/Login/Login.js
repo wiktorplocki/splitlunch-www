@@ -5,7 +5,7 @@ import AuthContext from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 import validate from './Validator';
 
-import LoginQuery from '../../queries/LoginQuery';
+import LoginQuery from '../../queries/LoginQuery.gql';
 
 const Login = () => {
   useTitle('SplitLunch - Login');
@@ -17,6 +17,7 @@ const Login = () => {
     handleFocus,
     handleBlur,
     errors
+    // eslint-disable-next-line no-use-before-define
   } = useForm(loginHandler, validate);
   let graphqlErrors = {};
   function loginHandler() {
@@ -31,7 +32,10 @@ const Login = () => {
       body: JSON.stringify(query)
     })
       .then(res => res.json())
-      .catch(err => (errors.password = err[0].message))
+      .catch(err => {
+        errors.password = err[0].message;
+        return errors.password;
+      })
       .then(result => {
         const { data } = result;
         if (result.errors) {
@@ -39,14 +43,16 @@ const Login = () => {
             ...graphqlErrors,
             graphql: result.errors[0].message
           };
-          console.log(graphqlErrors);
-        } else {
-          const { userId, token, tokenExpiry } = data.login;
-          login(userId, token, tokenExpiry);
-          return navigate('/', true);
+          return graphqlErrors;
         }
+        const { userId, token, tokenExpiry } = data.login;
+        login(userId, token, tokenExpiry);
+        return navigate('/', true);
       })
-      .catch(err => (errors.password = err));
+      .catch(err => {
+        errors.password = err;
+        return err;
+      });
   }
 
   return (

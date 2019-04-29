@@ -1,4 +1,5 @@
 export default function validate(values) {
+  // eslint-disable-next-line prefer-const
   let errors = {};
   if (
     (!values.email && values.emailTouched) ||
