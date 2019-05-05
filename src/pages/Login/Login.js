@@ -1,14 +1,22 @@
 import React, { useContext } from 'react';
 import { navigate, useTitle } from 'hookrouter';
+import Cookies from 'js-cookie';
 
 import AuthContext from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 import validate from './Validator';
 
+import getQueryFromGQLFile from '../../queries/getQuery';
+
 import LoginQuery from '../../queries/LoginQuery.gql';
+
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/Modal/Modal';
+import SnackBar from '../../components/SnackBar/SnackBar';
 
 const Login = () => {
   useTitle('SplitLunch - Login');
+  const { isShowing, toggle } = useModal();
   const { login } = useContext(AuthContext);
   const {
     values,
@@ -19,11 +27,12 @@ const Login = () => {
     errors
     // eslint-disable-next-line no-use-before-define
   } = useForm(loginHandler, validate);
-  let graphqlErrors = {};
+  // eslint-disable-next-line prefer-const
+  // let graphqlErrors = {};
   function loginHandler() {
     const { email, password } = values;
     const query = {
-      query: LoginQuery,
+      query: getQueryFromGQLFile(LoginQuery),
       variables: { email, password }
     };
     fetch(`https://splitlunch-api.now.sh`, {
@@ -37,16 +46,20 @@ const Login = () => {
         return errors.password;
       })
       .then(result => {
-        const { data } = result;
         if (result.errors) {
-          graphqlErrors = {
-            ...graphqlErrors,
-            graphql: result.errors[0].message
-          };
-          return graphqlErrors;
+          errors.graphql = result.errors[0].message;
+          toggle();
+          return errors.graphql;
         }
+        const { data } = result;
         const { userId, token, tokenExpiry } = data.login;
-        login(userId, token, tokenExpiry);
+        login(token, userId, tokenExpiry);
+        Cookies.set(
+          'SPLITLUNCH_TOKEN',
+          { token, userId, tokenExpiry },
+          { expires: tokenExpiry }
+        );
+        // Cookies.set('SPLITLUNCH_UID', userId, { expires: tokenExpiry });
         return navigate('/', true);
       })
       .catch(err => {
@@ -110,16 +123,24 @@ const Login = () => {
           </label>
           <p
             className={
-              errors.password || graphqlErrors
-                ? `block text-red text-xs italic`
-                : `hidden`
+              errors.password ? `block text-red text-xs italic` : `hidden`
             }
           >
-            {errors.password || graphqlErrors.graphql}
+            {errors.password}
           </p>
         </div>
         <button type="submit">Login</button>
       </form>
+      {errors.graphql && (
+        <Modal
+          isShowing={isShowing}
+          modalContent={
+            <SnackBar toggle={toggle} duration={3000}>
+              {errors.graphql}
+            </SnackBar>
+          }
+        />
+      )}
     </div>
   );
 };

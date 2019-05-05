@@ -1,0 +1,11 @@
+query Orders() {
+  orders() {
+    name
+    date
+    totalSum
+    participants {
+      name
+    }
+    finalized
+  }
+}

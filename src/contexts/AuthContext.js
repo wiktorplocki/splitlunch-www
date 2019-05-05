@@ -5,6 +5,7 @@ export default createContext({
   token: null,
   userId: null,
   tokenExpiry: null,
-  login: (userId, token, tokenExpiry) => {},
-  logout: () => {}
+  login: (token, userId, tokenExpiry) => {},
+  logout: () => {},
+  verifyToken: token => {}
 });

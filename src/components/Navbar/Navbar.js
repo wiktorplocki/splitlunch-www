@@ -17,7 +17,7 @@ const Navbar = () => (
           </div>
         </div>
         <nav className="right">
-          <ul className="list-reset">
+          <ul className="list-reset flex">
             {!context.token && (
               <A href="/login">
                 <li>Login</li>

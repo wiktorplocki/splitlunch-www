@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode=development --progress",
+    "now-dev": "webpack-dev-server --mode=development --progress",
     "now-build": "webpack --mode=production --config=webpack.config.js",
     "deploy": "now && now alias"
   },
@@ -15,7 +16,9 @@
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "hookrouter": "^1.1.4",
+    "js-cookie": "^2.2.0",
     "now-env": "^3.1.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
@@ -24,6 +27,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
+    "@playlyfe/gql": "^2.6.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
@@ -47,6 +51,8 @@
     "postcss-preset-env": "^6.6.0",
     "prettier": "^1.16.4",
     "purgecss-webpack-plugin": "^1.5.0",
+    "stylelint": "^10.0.1",
+    "stylelint-webpack-plugin": "^0.10.5",
     "tailwindcss": "^0.7.4",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
