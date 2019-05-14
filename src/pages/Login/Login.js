@@ -27,8 +27,6 @@ const Login = () => {
     errors
     // eslint-disable-next-line no-use-before-define
   } = useForm(loginHandler, validate);
-  // eslint-disable-next-line prefer-const
-  // let graphqlErrors = {};
   function loginHandler() {
     const { email, password } = values;
     const query = {
@@ -59,7 +57,6 @@ const Login = () => {
           { token, userId, tokenExpiry },
           { expires: tokenExpiry }
         );
-        // Cookies.set('SPLITLUNCH_UID', userId, { expires: tokenExpiry });
         return navigate('/', true);
       })
       .catch(err => {
