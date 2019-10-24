@@ -1,65 +1,43 @@
-require('now-env');
 const webpack = require('webpack');
-const path = require('path');
 const glob = require('glob');
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
-const Tailwind = require('tailwindcss');
 const PostcssPresetEnv = require('postcss-preset-env');
 const PostCssImport = require('postcss-import');
 const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
-
-class TailwindExtractor {
-  static extract(content) {
-    // eslint-disable-next-line no-useless-escape
-    return content.match(/[A-z0-9-:\/]+/g) || [];
-  }
-}
+const htmlTemplate = require('html-webpack-template');
 
 const PATHS = {
   src: path.join(__dirname, 'src')
 };
 
 module.exports = {
-  entry: './src/App.js',
+  entry: './src/index.js',
   output: {
     filename: 'main.[hash].js',
     chunkFilename: '[name].[hash].js'
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify(process.env.API_URL),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
+    new Dotenv(),
     new MiniCssExtractPlugin({
       filename: 'styles.[hash].css',
       chunkFilename: '[name].[hash].css'
     }),
-    new StylelintWebpackPlugin({
-      configFile: path.resolve(__dirname, '.stylelintrc.json'),
-      context: path.resolve(__dirname, 'src', 'stylesheets'),
-      files: '**/*.css',
-      failOnError: true,
-      quiet: false
-    }),
-    new PurgecssWebpackPlugin({
-      whitelist: ['html', 'body'],
-      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
-      content: ['./src/**/*.html', './src/**/*.js'],
-      extractors: [
-        {
-          extractor: TailwindExtractor,
-          extensions: ['html', 'js']
-        }
-      ]
-    }),
+    // new StylelintWebpackPlugin({
+    //   configFile: path.resolve(__dirname, '.stylelintrc.json'),
+    //   context: path.resolve(__dirname, 'src', 'stylesheets'),
+    //   files: '**/*.css',
+    //   failOnError: true,
+    //   quiet: false
+    // }),
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
       inject: false,
-      // eslint-disable-next-line global-require
-      template: require('html-webpack-template'),
+      template: htmlTemplate,
       appMountIds: ['root', 'portal'],
       mobile: true,
       lang: 'en',
@@ -145,11 +123,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: () => [
-                PostCssImport(),
-                PostcssPresetEnv({ stage: 0 }),
-                Tailwind('./tailwind.js')
-              ]
+              plugins: () => [PostCssImport(), PostcssPresetEnv({ stage: 0 })]
             }
           }
         ]
