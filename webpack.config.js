@@ -27,13 +27,16 @@ module.exports = {
       filename: 'styles.[hash].css',
       chunkFilename: '[name].[hash].css'
     }),
-    // new StylelintWebpackPlugin({
-    //   configFile: path.resolve(__dirname, '.stylelintrc.json'),
-    //   context: path.resolve(__dirname, 'src', 'stylesheets'),
-    //   files: '**/*.css',
-    //   failOnError: true,
-    //   quiet: false
-    // }),
+    new StylelintWebpackPlugin({
+      configFile: path.resolve(__dirname, '.stylelintrc.json'),
+      context: path.resolve(__dirname, 'src', 'stylesheets'),
+      files: '**/*.scss',
+      failOnError: true,
+      quiet: false
+    }),
+    new PurgecssWebpackPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
+    }),
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
       inject: false,
@@ -108,9 +111,10 @@ module.exports = {
         loader: 'graphql-tag/loader'
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         exclude: /node_modules/,
         use: [
+          'style-loader',
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
