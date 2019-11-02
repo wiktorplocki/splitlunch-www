@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const glob = require('glob');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
@@ -10,6 +9,7 @@ const PostcssPresetEnv = require('postcss-preset-env');
 const PostCssImport = require('postcss-import');
 const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 const htmlTemplate = require('html-webpack-template');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const PATHS = {
   src: path.join(__dirname, 'src')
@@ -23,6 +23,7 @@ module.exports = {
   },
   plugins: [
     new Dotenv(),
+    new LodashModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.[hash].css',
       chunkFilename: '[name].[hash].css'
@@ -33,9 +34,6 @@ module.exports = {
       files: '**/*.scss',
       failOnError: true,
       quiet: false
-    }),
-    new PurgecssWebpackPlugin({
-      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
     }),
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
@@ -49,15 +47,18 @@ module.exports = {
     new HtmlWebpackExternalsPlugin({
       externals: [
         {
-          module: 'google-nunito',
+          module: 'google-lato',
           entry: {
             path:
-              'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&amp;subset=latin-ext',
+              'https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap&subset=latin-ext',
             type: 'css'
           }
         }
       ]
     })
+    // new PurgecssWebpackPlugin({
+    //   paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
+    // })
   ],
   optimization: {
     splitChunks: {
@@ -68,6 +69,12 @@ module.exports = {
           chunks: 'all',
           test: /node_modules/,
           priority: 20
+        },
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
         }
       }
     },
@@ -95,7 +102,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          plugins: ['@babel/plugin-syntax-dynamic-import'],
+          plugins: ['@babel/plugin-syntax-dynamic-import', 'lodash'],
           presets: [
             [
               '@babel/preset-env',
@@ -111,16 +118,47 @@ module.exports = {
         loader: 'graphql-tag/loader'
       },
       {
-        test: /\.scss$/,
-        exclude: /node_modules/,
+        test: /\.(svg)$/,
         use: [
-          'style-loader',
+          'babel-loader',
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true,
+              svgo: {
+                plugins: [{ removeTitle: false }],
+                floatPrecision: 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: '[path][name]-[has].[ext]'
+          }
+        }
+      },
+      {
+        test: /\.(ttf|eof|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]'
+        }
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: [
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              importLoaders: 1
+              importLoaders: 1,
+              url: false
             }
           },
           {
@@ -129,6 +167,10 @@ module.exports = {
               ident: 'postcss',
               plugins: () => [PostCssImport(), PostcssPresetEnv({ stage: 0 })]
             }
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true }
           }
         ]
       }

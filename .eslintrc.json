@@ -23,6 +23,8 @@
     }
   },
   "rules": {
+    "no-unused-vars": ["error", { "args": "after-used", "argsIgnorePattern": "^_" }],
+    "array-callback-return": "off",
     "react/jsx-filename-extension": [
       1,
       {
@@ -35,6 +37,7 @@
         "singleQuote": true
       }
     ],
-    "react-hooks/rules-of-hooks": "error"
+    "react-hooks/rules-of-hooks": "error",
+    "react/forbid-prop-types": "off"
   }
 }

@@ -1,20 +1,24 @@
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useEffect } from 'react';
+import { location as locationShape } from 'react-router-prop-types';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-import HelloQuery from './graphql/HelloQuery';
+import './stylesheets/main.scss';
 
-const App = () => {
-  const { data, loading, error } = useQuery(HelloQuery);
+import Home from './pages/Home';
+import Login from './pages/Login';
 
-  if (loading) {
-    return <div>loading..</div>;
-  }
-
-  if (error) {
-    return <div>error</div>;
-  }
-
-  return <div>{data.hello}</div>;
+const App = ({ location }) => {
+  useEffect(() => console.log('route changed!'), [location]);
+  return (
+    <Switch>
+      <Route path="/" exact component={Home} />
+      <Route path="/login" exact component={Login} />
+    </Switch>
+  );
 };
 
-export default App;
+App.propTypes = {
+  location: locationShape.isRequired
+};
+
+export default withRouter(App);
