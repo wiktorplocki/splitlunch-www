@@ -10,6 +10,7 @@ const PostCssImport = require('postcss-import');
 const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 const htmlTemplate = require('html-webpack-template');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const cssnano = require('cssnano');
 
 const PATHS = {
   src: path.join(__dirname, 'src')
@@ -165,7 +166,11 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: () => [PostCssImport(), PostcssPresetEnv({ stage: 0 })]
+              plugins: () => [
+                PostCssImport(),
+                PostcssPresetEnv({ stage: 0 }),
+                process.env.NODE_ENV !== 'development' && cssnano()
+              ]
             }
           },
           {

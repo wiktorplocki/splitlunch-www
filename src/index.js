@@ -10,7 +10,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
-import { getAccessToken, setAccessToken } from './accessToken';
+import { getAccessToken, setAccessToken } from './helpers/accessToken';
 
 import App from './App';
 
