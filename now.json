@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "name": "splitlunch-client",
-  "alias": ["splitlunch.now.sh"],
+  "name": "splitlunch",
   "builds": [
-    { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "public" } }
+    { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "dist" } }
   ],
   "routes": [
     { "src": "/", "dest": "index.html", "methods": ["GET"] },
