@@ -1,20 +1,10 @@
-const glob = require('glob');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
-const PostcssPresetEnv = require('postcss-preset-env');
-const PostCssImport = require('postcss-import');
-const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
 const htmlTemplate = require('html-webpack-template');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-const cssnano = require('cssnano');
-
-const PATHS = {
-  src: path.join(__dirname, 'src')
-};
 
 module.exports = {
   entry: './src/index.js',
@@ -28,13 +18,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles.[hash].css',
       chunkFilename: '[name].[hash].css'
-    }),
-    new StylelintWebpackPlugin({
-      configFile: path.resolve(__dirname, '.stylelintrc.json'),
-      context: path.resolve(__dirname, 'src', 'stylesheets'),
-      files: '**/*.scss',
-      failOnError: true,
-      quiet: false
     }),
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
@@ -57,9 +40,6 @@ module.exports = {
         }
       ]
     })
-    // new PurgecssWebpackPlugin({
-    //   paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
-    // })
   ],
   optimization: {
     splitChunks: {
@@ -151,7 +131,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.(css)$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -161,21 +141,6 @@ module.exports = {
               importLoaders: 1,
               url: false
             }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: () => [
-                PostCssImport(),
-                PostcssPresetEnv({ stage: 0 }),
-                process.env.NODE_ENV !== 'development' && cssnano()
-              ]
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true }
           }
         ]
       }

@@ -2,8 +2,6 @@ import React, { lazy, useEffect, Suspense } from 'react';
 import { location as locationShape } from 'react-router-prop-types';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-import './stylesheets/main.scss';
-
 import Loading from './pages/Loading';
 
 const Home = lazy(() => import('./pages/Home'));

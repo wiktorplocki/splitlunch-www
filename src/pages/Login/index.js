@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import useForm from 'react-hook-form';
-import { Button } from 'react-rainbow-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
+import { Button } from 'react-rainbow-components';
 import { Card, Input } from '../../components';
 import sendRefreshToken from '../../helpers/sendRefreshToken';
 
@@ -42,6 +42,15 @@ const LoginPage = () => {
     margin: 16px 20px;
   `;
 
+  const StyledCard = styled(Card)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    width: 360px;
+    margin-bottom: 16px;
+  `;
+
   const InputsContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -63,7 +72,7 @@ const LoginPage = () => {
     <LoginPageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
       <FullScreenContainer>
         <Header>Sign in</Header>
-        <Card className="login__signinCard">
+        <StyledCard>
           <InputsContainer>
             <Input
               label="Email"
@@ -86,7 +95,7 @@ const LoginPage = () => {
               Forgot your password?
             </ForgotPasswordLink>
           </InputsContainer>
-        </Card>
+        </StyledCard>
         <Link to="/register">Sign up?</Link>
       </FullScreenContainer>
     </LoginPageForm>
