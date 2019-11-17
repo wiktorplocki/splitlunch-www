@@ -1,28 +1,40 @@
 import React, { lazy, useEffect, Suspense } from 'react';
-import { location as locationShape } from 'react-router-prop-types';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { setAccessToken } from './helpers/accessToken';
 
 import Loading from './pages/Loading';
+import Bye from './pages/Bye';
 
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 
-const App = ({ location }) => {
-  useEffect(() => console.log('route changed!'), [location]);
+const App = () => {
+  useEffect(
+    () =>
+      fetch(
+        process.env.NODE_ENV === 'production'
+          ? `${process.env.API_URL}/refresh_token`
+          : `${process.env.API_URL_LOCAL}/refresh_token`,
+        {
+          method: 'POST',
+          credentials: 'include'
+        }
+      ).then(async x => {
+        const { accessToken } = await x.json();
+        setAccessToken(accessToken);
+      }),
+    []
+  );
   return (
     <Suspense fallback={Loading}>
       <Switch>
-        <Route path="/" exact render={() => <Home />} />
-        <Route path="/login" exact render={() => <Login />} />
-        <Route path="/logout" exact render={() => <Home />} />
-        <Route path="/loading" exact render={() => <Loading />} />
+        <Route path="/" exact component={Home} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/bye" exact component={Bye} />
+        <Route path="/loading" exact component={Loading} />
       </Switch>
     </Suspense>
   );
 };
 
-App.propTypes = {
-  location: locationShape.isRequired
-};
-
-export default withRouter(App);
+export default App;

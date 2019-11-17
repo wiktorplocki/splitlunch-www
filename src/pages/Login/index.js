@@ -5,9 +5,57 @@ import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { Button } from 'react-rainbow-components';
 import { Card, Input } from '../../components';
-import sendRefreshToken from '../../helpers/sendRefreshToken';
+import { setAccessToken } from '../../helpers/accessToken';
 
 import LoginMutation from '../../graphql/LoginMutation';
+import MeQuery from '../../graphql/MeQuery';
+
+const LoginPageForm = styled.form`
+  font-family: 'Lato', sans-serif;
+`;
+
+const FullScreenContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex: 1;
+`;
+
+const Header = styled.p`
+  font-size: 24px;
+  font-weight: 300;
+  text-align: center;
+  color: #576574;
+  margin: 16px 20px;
+`;
+
+const StyledCard = styled(Card)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  width: 360px;
+  margin-bottom: 16px;
+`;
+
+const InputsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > :not(:first-child) {
+    margin-top: 24px;
+  }
+  & > :last-child {
+    margin-top: 16px;
+  }
+`;
+
+const ForgotPasswordLink = styled(Link)`
+  color: #01b6f5;
+  text-align: center;
+  font-size: 1rem;
+`;
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm();
@@ -15,58 +63,27 @@ const LoginPage = () => {
   const history = useHistory();
 
   const onSubmit = ({ email, password }) =>
-    login({ variables: { email, password } }).then(({ data }) => {
+    login({
+      variables: { email, password },
+      update: (store, { data }) => {
+        if (!data) {
+          return null;
+        }
+
+        store.writeQuery({
+          query: MeQuery,
+          data: {
+            me: data.login.user
+          }
+        });
+      }
+    }).then(({ data }) => {
+      console.log(data);
       if (data && data.login) {
-        sendRefreshToken().then(history.push('/'));
+        setAccessToken(data.login.accessToken);
+        history.push('/');
       }
     });
-
-  const LoginPageForm = styled.form`
-    font-family: 'Lato', sans-serif;
-  `;
-
-  const FullScreenContainer = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex: 1;
-  `;
-
-  const Header = styled.p`
-    font-size: 24px;
-    font-weight: 300;
-    text-align: center;
-    color: #576574;
-    margin: 16px 20px;
-  `;
-
-  const StyledCard = styled(Card)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
-    width: 360px;
-    margin-bottom: 16px;
-  `;
-
-  const InputsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    & > :not(:first-child) {
-      margin-top: 24px;
-    }
-    & > :last-child {
-      margin-top: 16px;
-    }
-  `;
-
-  const ForgotPasswordLink = styled(Link)`
-    color: #01b6f5;
-    text-align: center;
-    font-size: 1rem;
-  `;
 
   return (
     <LoginPageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
