@@ -1,7 +1,0 @@
-.navbar {
-  height: 60px;
-}
-
-li {
-  @apply mx-2;
-}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "splitlunch",
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "src": "/", "dest": "index.html", "methods": ["GET"] },
+    { "src": "/login", "dest": "index.html", "methods": ["GET"] },
+    { "src": "/orders", "dest": "index.html", "methods": ["GET"] }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "API_URL": "@splitlunch_prod_url",
+    "PORT": "8080"
+  }
+}

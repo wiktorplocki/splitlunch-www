@@ -1,9 +1,0 @@
-.Backdrop {
-  background: rgba(0, 0, 0, 0.75);
-
-  @apply fixed;
-  @apply pin-l;
-  @apply pin-t;
-  @apply h-screen;
-  @apply w-full;
-}

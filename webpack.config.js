@@ -1,65 +1,28 @@
-require('now-env');
-const webpack = require('webpack');
 const path = require('path');
-const glob = require('glob');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const PurgecssWebpackPlugin = require('purgecss-webpack-plugin');
-const Tailwind = require('tailwindcss');
-const PostcssPresetEnv = require('postcss-preset-env');
-const PostCssImport = require('postcss-import');
-const StylelintWebpackPlugin = require('stylelint-webpack-plugin');
-
-class TailwindExtractor {
-  static extract(content) {
-    // eslint-disable-next-line no-useless-escape
-    return content.match(/[A-z0-9-:\/]+/g) || [];
-  }
-}
-
-const PATHS = {
-  src: path.join(__dirname, 'src')
-};
+const htmlTemplate = require('html-webpack-template');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
-  entry: './src/App.js',
+  entry: './src/index.js',
   output: {
     filename: 'main.[hash].js',
     chunkFilename: '[name].[hash].js'
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.API_URL': JSON.stringify(process.env.API_URL),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
+    new Dotenv(),
+    new LodashModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.[hash].css',
       chunkFilename: '[name].[hash].css'
     }),
-    new StylelintWebpackPlugin({
-      configFile: path.resolve(__dirname, '.stylelintrc.json'),
-      context: path.resolve(__dirname, 'src', 'stylesheets'),
-      files: '**/*.css',
-      failOnError: true,
-      quiet: false
-    }),
-    new PurgecssWebpackPlugin({
-      whitelist: ['html', 'body'],
-      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
-      content: ['./src/**/*.html', './src/**/*.js'],
-      extractors: [
-        {
-          extractor: TailwindExtractor,
-          extensions: ['html', 'js']
-        }
-      ]
-    }),
     new HtmlWebpackPlugin({
       title: 'SplitLunch',
       inject: false,
-      // eslint-disable-next-line global-require
-      template: require('html-webpack-template'),
+      template: htmlTemplate,
       appMountIds: ['root', 'portal'],
       mobile: true,
       lang: 'en',
@@ -68,10 +31,10 @@ module.exports = {
     new HtmlWebpackExternalsPlugin({
       externals: [
         {
-          module: 'google-nunito',
+          module: 'google-lato',
           entry: {
             path:
-              'https://fonts.googleapis.com/css?family=Nunito:300,400,600,700&amp;subset=latin-ext',
+              'https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap&subset=latin-ext',
             type: 'css'
           }
         }
@@ -87,6 +50,12 @@ module.exports = {
           chunks: 'all',
           test: /node_modules/,
           priority: 20
+        },
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
         }
       }
     },
@@ -114,7 +83,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          plugins: ['@babel/plugin-syntax-dynamic-import'],
+          plugins: ['@babel/plugin-syntax-dynamic-import', 'lodash'],
           presets: [
             [
               '@babel/preset-env',
@@ -130,26 +99,47 @@ module.exports = {
         loader: 'graphql-tag/loader'
       },
       {
-        test: /\.css$/,
-        exclude: /node_modules/,
+        test: /\.(svg)$/,
+        use: [
+          'babel-loader',
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true,
+              svgo: {
+                plugins: [{ removeTitle: false }],
+                floatPrecision: 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: '[path][name]-[has].[ext]'
+          }
+        }
+      },
+      {
+        test: /\.(ttf|eof|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]'
+        }
+      },
+      {
+        test: /\.(css)$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              importLoaders: 1
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: () => [
-                PostCssImport(),
-                PostcssPresetEnv({ stage: 0 }),
-                Tailwind('./tailwind.js')
-              ]
+              importLoaders: 1,
+              url: false
             }
           }
         ]
