@@ -14,10 +14,10 @@ const App = ({ location }) => {
   return (
     <Suspense fallback={Loading}>
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/logout" exact component={Home} />
-        <Route path="/loading" exact component={Loading} />
+        <Route path="/" exact render={() => <Home />} />
+        <Route path="/login" exact render={() => <Login />} />
+        <Route path="/logout" exact render={() => <Home />} />
+        <Route path="/loading" exact render={() => <Loading />} />
       </Switch>
     </Suspense>
   );

@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Button, Card, Input } from 'react-rainbow-components';
+import useForm from 'react-hook-form';
+import { Button } from 'react-rainbow-components';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
+import { Card, Input } from '../../components';
 import sendRefreshToken from '../../helpers/sendRefreshToken';
 
 import LoginMutation from '../../graphql/LoginMutation';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register, handleSubmit } = useForm();
   const [login, { error }] = useMutation(LoginMutation);
   const history = useHistory();
 
-  const onSubmit = e => {
-    e.preventDefault();
+  const onSubmit = ({ email, password }) =>
     login({ variables: { email, password } }).then(({ data }) => {
       if (data && data.login) {
         sendRefreshToken().then(history.push('/'));
       }
     });
-  };
 
   const LoginPageForm = styled.form`
     font-family: 'Lato', sans-serif;
@@ -54,35 +53,41 @@ const LoginPage = () => {
     }
   `;
 
+  const ForgotPasswordLink = styled(Link)`
+    color: #01b6f5;
+    text-align: center;
+    font-size: 1rem;
+  `;
+
   return (
-    <LoginPageForm react-data="login" onSubmit={onSubmit}>
+    <LoginPageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
       <FullScreenContainer>
         <Header>Sign in</Header>
         <Card className="login__signinCard">
           <InputsContainer>
             <Input
               label="Email"
+              name="email"
               type="email"
-              error={error && error.message}
-              onChange={e => setEmail(e.target.value)}
               required
+              ref={register}
+              error={error && error.message}
             />
             <Input
               label="Password"
+              name="password"
               type="password"
-              error={error && error.message}
-              onChange={e => setPassword(e.target.value)}
               required
+              ref={register}
+              error={error && error.message}
             />
             <Button variant="brand" label="Login" type="submit" />
-            <Link to="/forgot-password" className="login__forgot-pw-link">
+            <ForgotPasswordLink to="/forgot-password">
               Forgot your password?
-            </Link>
+            </ForgotPasswordLink>
           </InputsContainer>
         </Card>
-        <Link to="/register" className="login__link">
-          Sign up?
-        </Link>
+        <Link to="/register">Sign up?</Link>
       </FullScreenContainer>
     </LoginPageForm>
   );

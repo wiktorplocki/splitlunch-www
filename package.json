@@ -25,8 +25,8 @@
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-hook-form": "^3.26.2",
-    "react-rainbow-components": "^1.7.0",
+    "react-hook-form": "^3.28.1",
+    "react-rainbow-components": "^1.9.0",
     "react-router-dom": "^5.1.2",
     "react-router-prop-types": "^1.0.4",
     "styled-components": "^4.4.1"
