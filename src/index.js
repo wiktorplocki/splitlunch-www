@@ -67,17 +67,10 @@ const client = new ApolloClient({
         }
       },
       fetchAccessToken: () =>
-        fetch(
-          `${
-            process.env.NODE_ENV === 'production'
-              ? process.env.API_URL
-              : process.env.API_URL_LOCAL
-          }/refresh_token`,
-          {
-            method: 'POST',
-            credentials: 'include'
-          }
-        ),
+        fetch(`${process.env.API_URL}/refresh_token`, {
+          method: 'POST',
+          credentials: 'include'
+        }),
       handleFetch: accessToken => setAccessToken(accessToken),
       handleError: err => {
         console.warn('Your refresh token is invalid. Try to relogin');
@@ -90,11 +83,7 @@ const client = new ApolloClient({
     }),
     requestLink,
     new HttpLink({
-      uri: `${
-        process.env.NODE_ENV === 'production'
-          ? process.env.API_URL
-          : process.env.API_URL_LOCAL
-      }/graphql`,
+      uri: `${process.env.API_URL}/graphql`,
       credentials: 'include'
     })
   ]),

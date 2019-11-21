@@ -11,16 +11,11 @@ const Login = lazy(() => import('./pages/Login'));
 const App = () => {
   useEffect(
     () =>
-      fetch(
-        process.env.NODE_ENV === 'production'
-          ? `${process.env.API_URL}/refresh_token`
-          : `${process.env.API_URL_LOCAL}/refresh_token`,
-        {
-          method: 'POST',
-          credentials: 'include'
-        }
-      ).then(async x => {
-        const { accessToken } = await x.json();
+      fetch(`${process.env.API_URL}/refresh_token`, {
+        method: 'POST',
+        credentials: 'include'
+      }).then(async response => {
+        const { accessToken } = await response.json();
         setAccessToken(accessToken);
       }),
     []
