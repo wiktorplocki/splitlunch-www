@@ -7,8 +7,8 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode=development --progress",
-    "prod": "webpack-dev-server --mode=production --progress",
+    "start": "webpack-dev-server --mode=development --NODE_ENV=development --progress",
+    "prod": "webpack-dev-server --mode=production --NODE_ENV=production --progress",
     "now-build": "webpack --mode=production --config=webpack.config.js",
     "deploy": "now --prod"
   },
