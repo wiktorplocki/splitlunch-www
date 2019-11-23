@@ -9,6 +9,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = () => {
   const plugins = [
+    new Dotenv(),
     new LodashModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.[hash].css',
@@ -38,9 +39,7 @@ module.exports = () => {
   ];
 
   const envHandler = () => {
-    if (process.env.NODE_ENV === 'development') {
-      plugins.push(new Dotenv());
-    } else {
+    if (process.env.NODE_ENV === 'production') {
       plugins.push(
         new webpack.EnvironmentPlugin({
           NODE_ENV: process.env.NODE_ENV,
