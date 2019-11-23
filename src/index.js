@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as Sentry from '@sentry/browser';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -12,6 +13,8 @@ import jwtDecode from 'jwt-decode';
 import { getAccessToken, setAccessToken } from './helpers/accessToken';
 
 import App from './App';
+
+Sentry.init({ dsn: process.env.SENTRY_CLIENT_DSN });
 
 const cache = new InMemoryCache({});
 

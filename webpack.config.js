@@ -44,6 +44,7 @@ module.exports = () => {
         new webpack.EnvironmentPlugin({
           NODE_ENV: process.env.NODE_ENV,
           API_URL: process.env.API_URL,
+          SENTRY_CLIENT_DSN: process.env.SENTRY_CLIENT_DSN,
           PORT: process.env.PORT
         })
       );
