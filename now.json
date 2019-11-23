@@ -13,12 +13,14 @@
   "env": {
     "NODE_ENV": "production",
     "API_URL": "@splitlunch_prod_url",
+    "SENTRY_CLIENT_DSN": "@sentry_client_dsn",
     "PORT": "8080"
   },
   "build": {
     "env": {
       "NODE_ENV": "production",
       "API_URL": "@splitlunch_prod_url",
+      "SENTRY_CLIENT_DSN": "@sentry_client_dsn",
       "PORT": "8080"
     }
   },
