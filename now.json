@@ -1,17 +1,26 @@
 {
   "version": 2,
   "name": "splitlunch",
+  "alias": "splitlunch.now.sh",
   "builds": [
     { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "dist" } }
   ],
   "routes": [
-    { "src": "/", "dest": "index.html", "methods": ["GET"] },
-    { "src": "/login", "dest": "index.html", "methods": ["GET"] },
-    { "src": "/orders", "dest": "index.html", "methods": ["GET"] }
+    { "src": "/", "dest": "index.html", "methods": ["GET", "OPTIONS"] },
+    { "src": "/login", "dest": "index.html", "methods": ["GET", "POST", "OPTIONS"] },
+    { "src": "/orders", "dest": "index.html", "methods": ["GET", "OPTIONS"] }
   ],
   "env": {
     "NODE_ENV": "production",
     "API_URL": "@splitlunch_prod_url",
     "PORT": "8080"
-  }
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "API_URL": "@splitlunch_prod_url",
+      "PORT": "8080"
+    }
+  },
+  "public": false
 }
