@@ -78,7 +78,6 @@ const LoginPage = () => {
         });
       }
     }).then(({ data }) => {
-      console.log(data);
       if (data && data.login) {
         setAccessToken(data.login.accessToken);
         history.push('/');

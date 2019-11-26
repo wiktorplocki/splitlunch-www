@@ -2,11 +2,11 @@ import React, { lazy, useEffect, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { setAccessToken } from './helpers/accessToken';
 
-import Loading from './pages/Loading';
-import Bye from './pages/Bye';
+import Loading from './pages/Loading/Loading';
+import Bye from './pages/Bye/Bye';
 
-const Home = lazy(() => import('./pages/Home'));
-const Login = lazy(() => import('./pages/Login'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const Login = lazy(() => import('./pages/Login/Login'));
 
 const App = () => {
   useEffect(
