@@ -11,7 +11,7 @@ export default function componentHasTestAttribute(component, testAtrribute) {
 }
 
 export const findByTestAttribute = (wrapped, testAtrribute) =>
-  wrapped.find(`[react-data]=${testAtrribute}`);
+  wrapped.find(`[react-data="${testAtrribute}"]`);
 
 export const checkProps = (component, propsToCheck) => {
   const propsError = checkPropTypes(
