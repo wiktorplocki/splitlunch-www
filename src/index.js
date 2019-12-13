@@ -1,20 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as Sentry from '@sentry/browser';
-import { BrowserRouter } from 'react-router-dom';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { onError } from 'apollo-link-error';
-import { ApolloLink, Observable } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { TokenRefreshLink } from 'apollo-link-token-refresh';
-import jwtDecode from 'jwt-decode';
-import { getAccessToken, setAccessToken } from './helpers/accessToken';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as Sentry from "@sentry/browser";
+import { BrowserRouter } from "react-router-dom";
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { onError } from "apollo-link-error";
+import { ApolloLink, Observable } from "apollo-link";
+import { HttpLink } from "apollo-link-http";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { TokenRefreshLink } from "apollo-link-token-refresh";
+import jwtDecode from "jwt-decode";
+import { getAccessToken, setAccessToken } from "./helpers/accessToken";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
 
-import App from './App';
-
-Sentry.init({ dsn: process.env.SENTRY_CLIENT_DSN });
+Sentry.init({ dsn: process.env.REACT_APP_SENTRY_CLIENT_DSN });
 
 const cache = new InMemoryCache({});
 
@@ -52,7 +53,7 @@ const requestLink = new ApolloLink(
 const client = new ApolloClient({
   link: ApolloLink.from([
     new TokenRefreshLink({
-      accessTokenField: 'accessToken',
+      accessTokenField: "accessToken",
       isTokenValidOrUndefined: () => {
         const token = getAccessToken();
         if (!token) {
@@ -70,13 +71,13 @@ const client = new ApolloClient({
         }
       },
       fetchAccessToken: () =>
-        fetch(`${process.env.API_URL}/refresh_token`, {
-          method: 'POST',
-          credentials: 'include'
+        fetch(`${process.env.REACT_APP_API_URL}/refresh_token`, {
+          method: "POST",
+          credentials: "include"
         }),
       handleFetch: accessToken => setAccessToken(accessToken),
       handleError: err => {
-        console.warn('Your refresh token is invalid. Try to relogin');
+        console.warn("Your refresh token is invalid. Try to relogin");
         console.error(err);
       }
     }),
@@ -86,12 +87,12 @@ const client = new ApolloClient({
     }),
     requestLink,
     new HttpLink({
-      uri: `${process.env.API_URL}/graphql`,
-      credentials: 'include'
+      uri: `${process.env.REACT_APP_API_URL}/graphql`,
+      credentials: "include"
     })
   ]),
   cache,
-  connectToDevTools: process.env.NODE_ENV !== 'production'
+  connectToDevTools: process.env.NODE_ENV !== "production"
 });
 
 ReactDOM.render(
@@ -100,5 +101,10 @@ ReactDOM.render(
       <App />
     </ApolloProvider>
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

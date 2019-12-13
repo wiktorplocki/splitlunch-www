@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const LoginMutation = gql`
   mutation Login($email: String!, $password: String!) {
@@ -6,6 +6,7 @@ const LoginMutation = gql`
       accessToken
       user {
         _id
+        email
       }
     }
   }

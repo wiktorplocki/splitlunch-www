@@ -1,45 +1,11 @@
-import React from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Link } from 'react-router-dom';
-import { setAccessToken } from '../../helpers/accessToken';
-
-import MeQuery from '../../graphql/MeQuery';
-import LogoutMutation from '../../graphql/LogoutMutation';
+import React from "react";
+import { Layout } from "../../components";
 
 const Home = () => {
-  const { data } = useQuery(MeQuery, { fetchPolicy: 'network-only' });
-  const [logout, { client }] = useMutation(LogoutMutation);
-  let body = null;
-  if (data) {
-    body = <div>You are logged in as {data.me.email}</div>;
-  } else {
-    body = <div>not logged in</div>;
-  }
   return (
-    <>
-      <div>Hello!</div>
-      <div>
-        <Link to="/login">Login</Link>
-      </div>
-      <div>
-        <Link to="/bye">Bye</Link>
-      </div>
-      {data && (
-        <div>
-          <button
-            onClick={async () => {
-              logout();
-              setAccessToken('');
-              await client.resetStore();
-            }}
-            type="button"
-          >
-            Logout
-          </button>
-        </div>
-      )}
-      {body}
-    </>
+    <Layout.Flex data-react="home">
+      <h1>Welcome home!</h1>
+    </Layout.Flex>
   );
 };
 
