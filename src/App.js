@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useQuery } from "@apollo/react-hooks";
+import { Layout } from "./components";
 import { setAccessToken } from "./helpers/accessToken";
 
 import { Navigation } from "./components/";
@@ -8,11 +7,8 @@ import { Navigation } from "./components/";
 import Loading from "./pages/Loading/Loading";
 import Routes from "./Routes";
 
-import MeQuery from "./graphql/MeQuery";
-
 function App() {
   const [loading, setLoading] = useState(true);
-  const { data } = useQuery(MeQuery);
   useEffect(() => {
     async function sendRefreshToken() {
       const response = await fetch(
@@ -22,26 +18,24 @@ function App() {
           credentials: "include"
         }
       );
-      const { accessToken } = await response.json();
-      setAccessToken(accessToken);
-      setLoading(false);
+      if (response) {
+        const { accessToken } = await response.json();
+        setAccessToken(accessToken);
+        setLoading(false);
+      }
     }
     sendRefreshToken();
   }, []);
-
-  const AppContainer = styled.div`
-    display: ${() => (data && data.me !== null ? "flex" : "block")};
-  `;
 
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <AppContainer>
+    <Layout.Flex className="derp">
       <Navigation />
       <Routes />
-    </AppContainer>
+    </Layout.Flex>
   );
 }
 

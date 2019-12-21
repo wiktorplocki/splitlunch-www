@@ -1,17 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
-import useForm from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
-import { Button } from 'react-rainbow-components';
-import { Card, Input } from '../../components';
-import { setAccessToken } from '../../helpers/accessToken';
+import React from "react";
+import styled from "styled-components";
+import useForm from "react-hook-form";
+import { Link, useHistory } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
+import { Button } from "react-rainbow-components";
+import { Card, Input } from "../../components";
+import { setAccessToken } from "../../helpers/accessToken";
 
-import LoginMutation from '../../graphql/LoginMutation';
-import MeQuery from '../../graphql/MeQuery';
+import LoginMutation from "../../graphql/LoginMutation";
+import MeQuery from "../../graphql/MeQuery";
 
 const LoginPageForm = styled.form`
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
+  margin: 0 auto;
 `;
 
 const FullScreenContainer = styled.section`
@@ -80,7 +81,7 @@ const LoginPage = () => {
     }).then(({ data }) => {
       if (data && data.login) {
         setAccessToken(data.login.accessToken);
-        history.push('/');
+        history.push("/");
       }
     });
 

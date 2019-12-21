@@ -3,6 +3,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Header as Navbar } from "../index";
 
+const LinkWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 200px;
+`;
+
 const StyledLink = styled(Link)`
   cursor: pointer;
   background-color: initial;
@@ -27,8 +33,10 @@ const StyledLink = styled(Link)`
 
 const HeaderNavbar = () => (
   <Navbar navbar react-data="headerNavbar">
-    <StyledLink to="/">Home</StyledLink>
-    <StyledLink to="/login">Login / Register</StyledLink>
+    <LinkWrapper>
+      <StyledLink to="/">Home</StyledLink>
+      <StyledLink to="/login">Login / Register</StyledLink>
+    </LinkWrapper>
   </Navbar>
 );
 

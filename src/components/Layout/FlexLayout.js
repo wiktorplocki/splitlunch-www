@@ -7,8 +7,8 @@ const StyledFlexLayout = styled.div`
   flex: 1;
 `;
 
-const FlexLayout = ({ children }) => (
-  <StyledFlexLayout>{children}</StyledFlexLayout>
+const FlexLayout = ({ children, className }) => (
+  <StyledFlexLayout className={className}>{children}</StyledFlexLayout>
 );
 
 export default FlexLayout;

@@ -12,9 +12,9 @@ const Dashboard = lazy(() => import("./pages/Home/Dashboard"));
 const Login = lazy(() => import("./pages/Login/Login"));
 
 const Routes = () => {
-  const { data } = useQuery(MeQuery);
+  const { data, error } = useQuery(MeQuery);
   const HomeRoute = () => {
-    if (data && data.me !== null) {
+    if (!error && data && data.me !== null) {
       return <Dashboard />;
     }
     return <Home />;

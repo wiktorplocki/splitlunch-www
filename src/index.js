@@ -1,6 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as Sentry from "@sentry/browser";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faChevronLeft,
+  faChevronRight,
+  faPowerOff,
+  faReceipt
+} from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -11,11 +18,14 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwtDecode from "jwt-decode";
 import { getAccessToken, setAccessToken } from "./helpers/accessToken";
+import "./normalize.css";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 Sentry.init({ dsn: process.env.REACT_APP_SENTRY_CLIENT_DSN });
+
+library.add(faChevronLeft, faChevronRight, faPowerOff, faReceipt);
 
 const cache = new InMemoryCache({});
 

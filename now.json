@@ -2,9 +2,6 @@
   "version": 2,
   "name": "splitlunch",
   "alias": "splitlunch.now.sh",
-  "builds": [
-    { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "dist" } }
-  ],
   "routes": [
     { "src": "/", "dest": "index.html", "methods": ["GET", "OPTIONS"] },
     { "src": "/login", "dest": "index.html", "methods": ["GET", "POST", "OPTIONS"] },
@@ -12,16 +9,14 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "API_URL": "@splitlunch_prod_url",
-    "SENTRY_CLIENT_DSN": "@sentry_client_dsn",
-    "PORT": "8080"
+    "REACT_APP_API_URL": "@splitlunch_prod_url",
+    "REACT_APP_SENTRY_CLIENT_DSN": "@sentry_client_dsn"
   },
   "build": {
     "env": {
       "NODE_ENV": "production",
-      "API_URL": "@splitlunch_prod_url",
-      "SENTRY_CLIENT_DSN": "@sentry_client_dsn",
-      "PORT": "8080"
+      "REACT_APP_API_URL": "@splitlunch_prod_url",
+      "REACT_APP_SENTRY_CLIENT_DSN": "@sentry_client_dsn"
     }
   },
   "public": false
