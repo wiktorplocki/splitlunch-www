@@ -11,22 +11,15 @@ import MeQuery from "./graphql/MeQuery";
 const Dashboard = lazy(() => import("./pages/Home/Dashboard"));
 const Login = lazy(() => import("./pages/Login/Login"));
 
-const AuthorizedRoute = (error, { me }) => {
-  if (!error && me !== null) {
-    return true;
+const AuthorizedRoute = (error, data) => {
+  if (error || !data || !data.me || data.me === null) {
+    return false;
   }
-  return false;
+  return true;
 };
 
 const Routes = () => {
   const { data, error } = useQuery(MeQuery);
-  const { me } = data;
-  const HomeRoute = () => {
-    if (!error && data && data.me !== null) {
-      return <Dashboard />;
-    }
-    return <Home />;
-  };
 
   return (
     <Suspense fallback={<Loading />}>
@@ -34,7 +27,7 @@ const Routes = () => {
         <Route
           path="/"
           exact
-          component={AuthorizedRoute(error, me) ? Dashboard : Home}
+          component={AuthorizedRoute(error, data) ? Dashboard : Home}
         />
         <Route path="/login" exact component={Login} />
         <Route path="/bye" exact component={Bye} />
