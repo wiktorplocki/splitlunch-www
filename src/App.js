@@ -32,7 +32,7 @@ function App() {
   }
 
   return (
-    <Layout.Flex className="derp">
+    <Layout.Flex>
       <Navigation />
       <Routes />
     </Layout.Flex>

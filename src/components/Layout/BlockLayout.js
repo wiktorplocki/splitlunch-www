@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledBlockLayout = styled.div`
   display: block;
@@ -12,3 +13,12 @@ const BlockLayout = ({ className, children }) => (
 );
 
 export default BlockLayout;
+
+BlockLayout.defaultProps = {
+  className: undefined
+};
+
+BlockLayout.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]).isRequired
+};

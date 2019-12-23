@@ -23,6 +23,8 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import { ErrorBoundary } from "./components";
+
 Sentry.init({ dsn: process.env.REACT_APP_SENTRY_CLIENT_DSN });
 
 library.add(faChevronLeft, faChevronRight, faPowerOff, faReceipt);
@@ -106,11 +108,13 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </BrowserRouter>,
+  <ErrorBoundary>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </BrowserRouter>
+  </ErrorBoundary>,
   document.getElementById("root")
 );
 
