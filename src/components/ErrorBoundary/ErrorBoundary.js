@@ -33,7 +33,7 @@ class ErrorBoundary extends React.Component {
       .isRequired
   };
 
-  static getDerivedStateFromProps(error) {
+  static getDerivedStateFromError(error) {
     return { hasError: true };
   }
 
