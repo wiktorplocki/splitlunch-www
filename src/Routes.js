@@ -4,7 +4,6 @@ import { useQuery } from "@apollo/react-hooks";
 
 import Loading from "./pages/Loading/Loading";
 import Home from "./pages/Home/Home";
-import Bye from "./pages/Bye/Bye";
 
 import MeQuery from "./graphql/MeQuery";
 
@@ -30,7 +29,6 @@ const Routes = () => {
           component={AuthorizedRoute(error, data) ? Dashboard : Home}
         />
         <Route path="/login" exact component={Login} />
-        <Route path="/bye" exact component={Bye} />
       </Switch>
     </Suspense>
   );
