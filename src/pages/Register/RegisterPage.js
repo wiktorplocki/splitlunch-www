@@ -23,8 +23,11 @@ const RegisterPage = () => {
   const onSubmit = ({ email, password }) =>
     registerUser({
       variables: { email, password }
-    }).then(() => history.push("/login"));
-
+    }).then(({ data }) => {
+      if (data && data.register && data.register === true) {
+        history.push("/login");
+      }
+    });
   return (
     <PageForm react-data="register" onSubmit={handleSubmit(onSubmit)}>
       <FullScreenContainer>
