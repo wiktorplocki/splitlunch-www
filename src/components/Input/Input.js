@@ -36,7 +36,7 @@ const InputComponent = styled.input`
   width: 100%;
   transition: all 0.1s linear;
   display: inline-block;
-  /* padding: 0 1rem; */
+  text-align: center;
   line-height: 2.5rem;
   height: 2.5rem;
   color: #061c3f;
@@ -44,7 +44,6 @@ const InputComponent = styled.input`
   &:active,
   :focus {
     outline: 0;
-    /* padding: 0 0.9375rem; */
     border: 2px #01b6f5 solid;
     background-color: #fff;
     box-shadow: 0 0 2px #01b6f5;

@@ -33,13 +33,28 @@ const InputsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 9.375vw;
   margin: 32px;
   & > :not(:first-child) {
     margin-top: 24px;
   }
   & > :last-child {
     margin-top: 16px;
+  }
+
+  @media (min-width: 270px) {
+    width: 75vw;
+  }
+
+  @media (min-width: 540px) {
+    width: 37.5vw;
+  }
+
+  @media (min-width: 1080px) {
+    width: 18.75vw;
+  }
+
+  @media (min-width: 2160px) {
+    width: 9.375vw;
   }
 `;
 
