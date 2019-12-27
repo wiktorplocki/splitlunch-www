@@ -1,11 +1,12 @@
-import React, { forwardRef } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import React, { forwardRef } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const InputComponentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  width: 100%;
 `;
 
 const InputLabel = styled.label`
@@ -30,12 +31,12 @@ const InputWrapper = styled.div`
 
 const InputComponent = styled.input`
   background-color: #fff;
-  border: ${props => (props.error ? '2px solid #fe4849' : '1px solid #a4a7b5')}
+  border: ${props => (props.error ? "2px solid #fe4849" : "1px solid #a4a7b5")};
   border-radius: 12rem;
   width: 100%;
   transition: all 0.1s linear;
   display: inline-block;
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
   line-height: 2.5rem;
   height: 2.5rem;
   color: #061c3f;
@@ -43,7 +44,7 @@ const InputComponent = styled.input`
   &:active,
   :focus {
     outline: 0;
-    padding: 0 0.9375rem;
+    /* padding: 0 0.9375rem; */
     border: 2px #01b6f5 solid;
     background-color: #fff;
     box-shadow: 0 0 2px #01b6f5;
@@ -74,9 +75,9 @@ const Input = forwardRef(
 
 Input.defaultProps = {
   error: undefined,
-  label: '',
+  label: "",
   required: false,
-  type: 'text',
+  type: "text",
   className: undefined
 };
 
@@ -91,7 +92,7 @@ Input.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
   required: PropTypes.bool,
-  type: PropTypes.oneOf(['text', 'email', 'password']),
+  type: PropTypes.oneOf(["text", "email", "password"]),
   className: PropTypes.string
 };
 

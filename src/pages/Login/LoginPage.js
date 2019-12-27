@@ -1,62 +1,21 @@
 import React from "react";
-import styled from "styled-components";
 import useForm from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { Button } from "react-rainbow-components";
-import { Card, Input } from "../../components";
+import {
+  ForgotPasswordLink,
+  FullScreenContainer,
+  Header,
+  InputsContainer,
+  PageForm,
+  StyledCard
+} from "../+Components/StyledComponents";
+import { Input } from "../../components";
 import { setAccessToken } from "../../helpers/accessToken";
 
 import LoginMutation from "../../graphql/LoginMutation";
 import MeQuery from "../../graphql/MeQuery";
-
-const LoginPageForm = styled.form`
-  font-family: "Lato", sans-serif;
-  margin: 0 auto;
-`;
-
-const FullScreenContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex: 1;
-`;
-
-const Header = styled.p`
-  font-size: 24px;
-  font-weight: 300;
-  text-align: center;
-  color: #576574;
-  margin: 16px 20px;
-`;
-
-const StyledCard = styled(Card)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  width: 360px;
-  margin-bottom: 16px;
-`;
-
-const InputsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  & > :not(:first-child) {
-    margin-top: 24px;
-  }
-  & > :last-child {
-    margin-top: 16px;
-  }
-`;
-
-const ForgotPasswordLink = styled(Link)`
-  color: #01b6f5;
-  text-align: center;
-  font-size: 1rem;
-`;
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm();
@@ -86,7 +45,7 @@ const LoginPage = () => {
     });
 
   return (
-    <LoginPageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
+    <PageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
       <FullScreenContainer>
         <Header>Sign in</Header>
         <StyledCard>
@@ -107,15 +66,15 @@ const LoginPage = () => {
               ref={register}
               error={error && error.message}
             />
-            <Button variant="brand" label="Login" type="submit" />
-            <ForgotPasswordLink to="/forgot-password">
+            <Button variant="brand" label="Sign in" type="submit" />
+            <ForgotPasswordLink to="#">
               Forgot your password?
             </ForgotPasswordLink>
           </InputsContainer>
         </StyledCard>
-        <Link to="/register">Sign up?</Link>
+        <Link to="register">Sign up?</Link>
       </FullScreenContainer>
-    </LoginPageForm>
+    </PageForm>
   );
 };
 
