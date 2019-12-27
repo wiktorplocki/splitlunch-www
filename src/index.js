@@ -37,12 +37,20 @@ const requestLink = new ApolloLink(
       let handle;
       Promise.resolve(operation)
         .then(nextOperation => {
+          const acceptEncoding = {
+            "Accept-Encoding": "br"
+          };
           const accessToken = getAccessToken();
           if (accessToken) {
             nextOperation.setContext({
               headers: {
-                authorization: `Bearer ${accessToken}`
+                authorization: `Bearer ${accessToken}`,
+                ...acceptEncoding
               }
+            });
+          } else {
+            nextOperation.setContext({
+              headers: acceptEncoding
             });
           }
         })
