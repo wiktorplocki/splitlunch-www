@@ -58,7 +58,7 @@ const InputsContainer = styled.div`
   }
 `;
 
-const ForgotPasswordLink = styled(Link)`
+const StyledLink = styled(Link)`
   color: #01b6f5;
   text-align: center;
   font-size: 1rem;
@@ -70,5 +70,5 @@ export {
   Header,
   StyledCard,
   InputsContainer,
-  ForgotPasswordLink
+  StyledLink
 };

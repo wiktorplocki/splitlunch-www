@@ -1,15 +1,15 @@
 import React from "react";
 import useForm from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { Button } from "react-rainbow-components";
 import {
-  ForgotPasswordLink,
   FullScreenContainer,
   Header,
   InputsContainer,
   PageForm,
-  StyledCard
+  StyledCard,
+  StyledLink
 } from "../+Components/StyledComponents";
 import { Input } from "../../components";
 import { setAccessToken } from "../../helpers/accessToken";
@@ -67,12 +67,10 @@ const LoginPage = () => {
               error={error && error.message}
             />
             <Button variant="brand" label="Sign in" type="submit" />
-            <ForgotPasswordLink to="#">
-              Forgot your password?
-            </ForgotPasswordLink>
+            <StyledLink to="#">Forgot your password?</StyledLink>
           </InputsContainer>
         </StyledCard>
-        <Link to="register">Sign up?</Link>
+        <StyledLink to="register">Sign up?</StyledLink>
       </FullScreenContainer>
     </PageForm>
   );

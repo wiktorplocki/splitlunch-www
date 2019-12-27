@@ -5,9 +5,10 @@ import {
   Header,
   InputsContainer,
   PageForm,
-  StyledCard
+  StyledCard,
+  StyledLink
 } from "../+Components/StyledComponents";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { Button } from "react-rainbow-components";
 import { Input } from "../../components";
@@ -49,7 +50,7 @@ const RegisterPage = () => {
             <Button variant="brand" label="Register" type="submit" />
           </InputsContainer>
         </StyledCard>
-        <Link to="/login">Login</Link>
+        <StyledLink to="/login">Login</StyledLink>
       </FullScreenContainer>
     </PageForm>
   );
