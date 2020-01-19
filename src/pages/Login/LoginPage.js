@@ -1,17 +1,16 @@
 import React from "react";
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { Button } from "react-rainbow-components";
 import {
-  FullScreenContainer,
   Header,
   InputsContainer,
   PageForm,
   StyledCard,
   StyledLink
 } from "../+Components/StyledComponents";
-import { Input } from "../../components";
+import { Input, Layout } from "../../components";
 import { setAccessToken } from "../../helpers/accessToken";
 
 import LoginMutation from "../../graphql/LoginMutation";
@@ -46,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <PageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
-      <FullScreenContainer>
+      <Layout.Flex absoluteCenter direction="column" fullScreen>
         <Header>Sign in</Header>
         <StyledCard>
           <InputsContainer>
@@ -71,7 +70,7 @@ const LoginPage = () => {
           </InputsContainer>
         </StyledCard>
         <StyledLink to="register">Sign up?</StyledLink>
-      </FullScreenContainer>
+      </Layout.Flex>
     </PageForm>
   );
 };

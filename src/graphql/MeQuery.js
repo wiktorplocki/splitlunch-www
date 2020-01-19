@@ -1,10 +1,9 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const MeQuery = gql`
   query Me {
     me {
       _id
-      email
     }
   }
 `;

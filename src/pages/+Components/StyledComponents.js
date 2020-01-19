@@ -7,16 +7,7 @@ const PageForm = styled.form`
   margin: 0 auto;
 `;
 
-const FullScreenContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex: 1;
-`;
-
-const Header = styled.p`
+const Header = styled.h1`
   font-size: 24px;
   font-weight: 300;
   text-align: center;
@@ -64,11 +55,4 @@ const StyledLink = styled(Link)`
   font-size: 1rem;
 `;
 
-export {
-  PageForm,
-  FullScreenContainer,
-  Header,
-  StyledCard,
-  InputsContainer,
-  StyledLink
-};
+export { PageForm, Header, StyledCard, InputsContainer, StyledLink };

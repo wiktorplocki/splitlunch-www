@@ -1,7 +1,6 @@
 import React from "react";
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
-  FullScreenContainer,
   Header,
   InputsContainer,
   PageForm,
@@ -11,7 +10,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { Button } from "react-rainbow-components";
-import { Input } from "../../components";
+import { Input, Layout } from "../../components";
 
 import RegisterMutation from "../../graphql/RegisterMutation";
 
@@ -30,7 +29,7 @@ const RegisterPage = () => {
     });
   return (
     <PageForm react-data="register" onSubmit={handleSubmit(onSubmit)}>
-      <FullScreenContainer>
+      <Layout.Flex absoluteCenter direction="column" fullScreen>
         <Header>Register</Header>
         <StyledCard>
           <InputsContainer>
@@ -54,7 +53,7 @@ const RegisterPage = () => {
           </InputsContainer>
         </StyledCard>
         <StyledLink to="/login">Login</StyledLink>
-      </FullScreenContainer>
+      </Layout.Flex>
     </PageForm>
   );
 };

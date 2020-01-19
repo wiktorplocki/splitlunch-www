@@ -10,6 +10,7 @@ import MeQuery from "./graphql/MeQuery";
 const Dashboard = lazy(() => import("./pages/Home/Dashboard"));
 const Login = lazy(() => import("./pages/Login/LoginPage"));
 const Register = lazy(() => import("./pages/Register/RegisterPage"));
+const NewOrder = lazy(() => import("./pages/Order/NewOrderPage"));
 
 const AuthorizedRoute = (error, data) => {
   if (error || !data || !data.me || data.me === null) {
@@ -31,6 +32,7 @@ const Routes = () => {
         />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
+        <Route path="/order/create" exact component={NewOrder} />
       </Switch>
     </Suspense>
   );

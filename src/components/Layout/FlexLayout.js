@@ -19,17 +19,24 @@ function flexDirection(direction) {
 
 const StyledFlexLayout = styled.div`
   display: flex;
-  height: 100vh;
-  flex: 1;
+  height: ${props => props.fullScreen && "100vh"};
+  flex: ${props => props.fullScreen && 1};
   flex-direction: ${props => props.direction && flexDirection(props.direction)};
   align-items: ${props => props.absoluteCenter && "center"};
   justify-content: ${props => props.absoluteCenter && "center"};
 `;
 
-const FlexLayout = ({ absoluteCenter, direction, children, className }) => (
+const FlexLayout = ({
+  absoluteCenter,
+  direction,
+  fullScreen,
+  children,
+  className
+}) => (
   <StyledFlexLayout
     absoluteCenter={absoluteCenter}
     direction={direction}
+    fullScreen={fullScreen}
     className={className}
   >
     {children}
@@ -39,6 +46,7 @@ const FlexLayout = ({ absoluteCenter, direction, children, className }) => (
 FlexLayout.defaultProps = {
   absoluteCenter: false,
   direction: "row",
+  fullScreen: false,
   className: undefined
 };
 
@@ -50,6 +58,7 @@ FlexLayout.propTypes = {
     "row-reverse",
     "column-reverse"
   ]),
+  fullScreen: PropTypes.bool,
   className: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]).isRequired
 };

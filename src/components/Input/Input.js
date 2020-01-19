@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const InputComponentWrapper = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const InputLabel = styled.label`
   color: #576574;
   font-size: 0.875rem;
   line-height: 1.5;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.125rem;
   align-self: center;
 `;
 
@@ -58,14 +59,24 @@ const InputError = styled.div`
 `;
 
 const Input = forwardRef(
-  ({ error, label, required, name, type, className }, ref) => (
+  (
+    { error, icon, label, onClick, readOnly, required, name, type, className },
+    ref
+  ) => (
     <InputComponentWrapper className={className}>
       <InputLabel>
         {required && <InputRequired />}
         {label}
       </InputLabel>
       <InputWrapper>
-        <InputComponent name={name} type={type} ref={ref} />
+        {icon && <FontAwesomeIcon icon={icon} />}
+        <InputComponent
+          name={name}
+          onClick={onClick}
+          readOnly={readOnly}
+          type={type}
+          ref={ref}
+        />
       </InputWrapper>
       {error && <InputError>{error}</InputError>}
     </InputComponentWrapper>
@@ -74,7 +85,10 @@ const Input = forwardRef(
 
 Input.defaultProps = {
   error: undefined,
+  icon: undefined,
   label: "",
+  onClick: undefined,
+  readOnly: false,
   required: false,
   type: "text",
   className: undefined
@@ -88,8 +102,11 @@ Input.propTypes = {
     }),
     PropTypes.string
   ]),
+  icon: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  readOnly: PropTypes.bool,
   required: PropTypes.bool,
   type: PropTypes.oneOf(["text", "email", "password"]),
   className: PropTypes.string
