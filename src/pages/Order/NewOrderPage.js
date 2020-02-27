@@ -18,14 +18,12 @@ const NewOrderPage = () => {
   const [createOrder, { error }] = useMutation(NewOrderMutation);
   const history = useHistory();
 
-  const onSubmit2 = values => console.log(values);
-
-  const onSubmit = ({ name, description, date }) => {
-    createOrder({
+  const onSubmit = async ({ name, description, date }) => {
+    const { data } = await createOrder({
       variables: { order: { name, description, date } }
-    }).then(({ data }) => {
-      console.log(data);
     });
+    const { _id } = data.createOrder;
+    history.push(`/orders/${_id}`);
   };
 
   return (
