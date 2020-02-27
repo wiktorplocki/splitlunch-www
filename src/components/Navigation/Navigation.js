@@ -36,7 +36,7 @@ const VerticalNavigationContainer = styled.div`
   }
 
   @media (min-width: 1080px) {
-    width: ${props => props.showNav && `10.48vw;`};
+    width: ${props => props.showNav && `10.48vw`};
   }
 
   @media (min-width: 2160px) {
@@ -58,10 +58,7 @@ const Navigation = () => {
   const isLoggedIn = getAccessToken() !== "";
   if (isLoggedIn) {
     return (
-      <VerticalNavigationContainer
-        showNav={showNav}
-        react-data="VerticalNavigation"
-      >
+      <VerticalNavigationContainer react-data="VerticalNavigation">
         <StyledVerticalNavigation showNav={showNav}>
           <VerticalSection>
             <VerticalItem
