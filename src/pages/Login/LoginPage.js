@@ -21,8 +21,8 @@ const LoginPage = () => {
   const [login, { error }] = useMutation(LoginMutation);
   const history = useHistory();
 
-  const onSubmit = ({ email, password }) =>
-    login({
+  const onSubmit = async ({ email, password }) => {
+    const { data } = await login({
       variables: { email, password },
       update: (store, { data }) => {
         if (!data) {
@@ -36,12 +36,12 @@ const LoginPage = () => {
           }
         });
       }
-    }).then(({ data }) => {
-      if (data && data.login) {
-        setAccessToken(data.login.accessToken);
-        history.push("/");
-      }
     });
+    if (data && data.login) {
+      setAccessToken(data.login.AccessToken);
+      history.push("/");
+    }
+  };
 
   return (
     <PageForm react-data="login" onSubmit={handleSubmit(onSubmit)}>
