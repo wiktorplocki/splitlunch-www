@@ -4,6 +4,11 @@ const DashboardQuery = gql`
   query DashboardQuery($count: Int!) {
     lastNumOrders(count: $count) {
       _id
+      name
+      date
+      participants {
+        name
+      }
     }
   }
 `;

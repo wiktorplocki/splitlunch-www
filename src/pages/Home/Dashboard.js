@@ -8,6 +8,22 @@ import DashboardQuery from "../../graphql/DashboardQuery";
 
 const StyledCard = styled(Card)`
   width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const StyledCardHeading = styled.div`
+  height: 100px;
+  width: 100%;
+  text-align: center;
+`;
+
+const StyledCardTitle = styled.h1`
+  font-size: 24px;
+  font-weight: 600;
+  color: #576574;
 `;
 
 const StyledHeader = styled.h1`
@@ -30,6 +46,7 @@ const ListWrapper = styled.div`
 
 const Dashboard = () => {
   const { data } = useQuery(DashboardQuery, { variables: { count: 5 } });
+  console.log(data);
   return (
     <Layout.Flex direction="column" fullScreen data-react="dashboard">
       <StyledHeader>
@@ -39,8 +56,12 @@ const Dashboard = () => {
         <ListWrapper>
           {data && data.lastNumOrders.length > 0 ? (
             <>
-              {data.lastNumOrders.map(order => (
-                <StyledCard>dupa</StyledCard>
+              {data.lastNumOrders.map(({ _id, name, date, participants }) => (
+                <StyledCard key={_id}>
+                  <StyledCardHeading>
+                    <StyledCardTitle>{name}</StyledCardTitle>
+                  </StyledCardHeading>
+                </StyledCard>
               ))}
             </>
           ) : (
