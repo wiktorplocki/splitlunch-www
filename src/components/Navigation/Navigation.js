@@ -47,8 +47,13 @@ const VerticalNavigationContainer = styled.div`
 const VerticalNavigationToggleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: ${props => (props.showNav ? `${-22.5}px` : `${-20}px`)};
+  margin-right: ${props => (props.showNav ? `${22.5}px` : `${45}px`)};
   border-left: 3px solid #01b6f5;
+`;
+
+const StyledButtonIcon = styled(ButtonIcon)`
+  margin-left: ${props => (props.showNav ? `${-22.5}px` : `${-10}px`)};
+  z-index: 1000;
 `;
 
 const Navigation = () => {
@@ -79,7 +84,8 @@ const Navigation = () => {
           </VerticalSection>
         </StyledVerticalNavigation>
         <VerticalNavigationToggleContainer showNav={showNav}>
-          <ButtonIcon
+          <StyledButtonIcon
+            showNav={showNav}
             variant="brand"
             icon={
               <FontAwesomeIcon
