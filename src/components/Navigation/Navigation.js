@@ -26,6 +26,7 @@ const VerticalNavigationContainer = styled.div`
   border-left: ${props => !props.showNav && "3px solid #01b6f5"};
   display: flex;
   flex-direction: row;
+  height: 100vh;
 
   @media (min-width: 270px) {
     width: ${props => props.showNav && `41.92vw`};
