@@ -20,7 +20,7 @@ const AuthorizedRoute = (error, data) => {
 };
 
 const Routes = () => {
-  const { data, error } = useQuery(MeQuery);
+  const { data, error } = useQuery(MeQuery, { fetchPolicy: "network-only" });
 
   return (
     <Suspense fallback={<Loading />}>

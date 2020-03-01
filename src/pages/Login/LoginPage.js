@@ -38,7 +38,7 @@ const LoginPage = () => {
       }
     });
     if (data && data.login) {
-      setAccessToken(data.login.AccessToken);
+      setAccessToken(data.login.accessToken);
       history.push("/");
     }
   };

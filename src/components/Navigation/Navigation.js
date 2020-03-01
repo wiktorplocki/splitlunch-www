@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "@apollo/react-hooks";
-import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   ButtonIcon,
   VerticalItem,
@@ -60,7 +60,7 @@ const StyledButtonIcon = styled(ButtonIcon)`
 const Navigation = () => {
   const [showNav, setShowNav] = useState(true);
   const [logout, { client }] = useMutation(LogoutMutation);
-  const { pathname } = useLocation();
+  const history = useHistory();
   const isLoggedIn = getAccessToken() !== "";
   if (isLoggedIn) {
     return (
@@ -77,9 +77,10 @@ const Navigation = () => {
               label="Logout"
               icon={<FontAwesomeIcon icon="power-off" />}
               onClick={async () => {
-                logout();
                 setAccessToken("");
+                await logout();
                 await client.resetStore();
+                history.push("/");
               }}
             />
           </VerticalSection>
@@ -98,9 +99,6 @@ const Navigation = () => {
         </VerticalNavigationToggleContainer>
       </VerticalNavigationContainer>
     );
-  }
-  if (!isLoggedIn && pathname === "/") {
-    return null;
   }
   return null;
 };
